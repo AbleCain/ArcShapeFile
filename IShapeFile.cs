@@ -43,7 +43,7 @@ namespace ArcShapeFile
         void Open(string filename);
         void Open(string filename, eShapeType shapetype, bool lockfile);
         void Open(string filename, bool lockfile);
-        void Open(string filename, eShapeType shapetype);
+		void Open(string filename, bool isNew, eShapeType shapetype);
         void Pack();
         Parts Parts { get; }
         double Perimeter { get; }

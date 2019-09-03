@@ -5690,138 +5690,140 @@ namespace ArcShapeFile
         /// <seealso cref="ReadMode"/>
         public void Open(string filename)
         { OpenShape(filename, false, eShapeType.shpNull, false); }
+
+		///  <summary>
+		///  Creates a ShapeFile of a particular ShapeType ready for you to play with 
+		///  </summary>
+		///  <param name="filename">The name of the ShapeFile to create</param>
+		/// <param name="isNew">flag to indicate if creating new file (true) or opening existing (false)</param>
+		/// <param name="shapetype">The type of ShapeFile to be created</param>
+		///  <remarks>
+		///  <para>This overload of the Open method creates a new ShapeFile or overwrites an existing ShapeFile.  Don't forget to define a field definition using the <see cref="O:ArcShapeFile.Fields.Add">Field.Add</see> method AND write them out with <see cref="WriteFieldDefs"/>.  If you don't then this beast will automatically create a integer field definition called SHAPE_ID to prevent you .DBF file from being corrupted.</para>
+		///  <para>For a speed test of the various Open methods refer to the table in <see cref="ReadMode"/></para>
+		///  </remarks>
+		///  <example>
+		///  <code lang="C#">
+		/// using (ShapeFile myShape = new ShapeFile())
+		/// {
+		///     myShape.Open(@"C:\Shapes\Point.shp", eShapeType.shpPoint);
+		///     Console.WriteLine("Shape Type: {0}", myShape.ShapeType);
+		/// 
+		///     // Add a new record
+		///     myShape.Vertices.Add(10, 10);
+		///     myShape.Fields["TextField"].Value = "New Record";
+		///     myShape.Fields["NumField"].Value = 3.45;
+		///     myShape.Fields["DateField"].Value = DateTime.Now;
+		///     myShape.WriteShape();
+		/// 
+		///     // Wait a while as someone else is playing with the shape ...
+		///     System.Threading.Thread.Sleep(10000);
+		/// 
+		///     // Add a another new record
+		///     myShape.Vertices.Add(10, 15);
+		///     myShape.Fields[0].Value = "New Record 2";
+		///     myShape.Fields[1].Value = 4.45;
+		///     myShape.Fields[2].Value = DateTime.Now;
+		///     myShape.WriteShape();
+		/// }
+		///  </code>
+		///  <code lang="VB">
+		/// Using myShape As New ShapeFile()
+		///     myShape.Open(@"C:\Shapes\Point.shp", eShapeType.shpPoint)
+		///     Console.WriteLine("Shape Type: {0}", myShape.ShapeType)
+		/// 
+		///     ' Add a new record
+		///     myShape.Vertices.Add(10, 10)
+		///     myShape.Fields("TextField").Value = "New Record";
+		///     myShape.Fields("NumField").Value = 3.45;
+		///     myShape.Fields("DateField").Value = DateTime.Now;
+		///     myShape.WriteShape()
+		/// 
+		///     ' Wait a while as someone else is playing with the shape ...
+		///     System.Threading.Thread.Sleep(10000)
+		/// 
+		///     ' Add a another new record
+		///     myShape.Vertices.Add(10, 15)
+		///     myShape.Fields(0).Value = "New Record 2"
+		///     myShape.Fields(1).Value = 4.45
+		///     myShape.Fields(2).Value = DateTime.Now
+		///     myShape.WriteShape()
+		/// End Using
+		///  </code>
+		///  </example>
+		///  <seealso cref="Open(System.String)"/>
+		///  <seealso cref="Open(System.String, System.Boolean)"/>
+		///  <seealso cref="Open(System.String, eShapeType, System.Boolean)"/>
+		///  <seealso cref="Close"/>
+		///  <seealso cref="ReadMode"/>
+		public void Open(string filename, bool isNew, eShapeType shapetype)
+		{ OpenShape(filename, isNew, shapetype, false); }
         /// <summary>
-        /// Creates a ShapeFile of a particular ShapeType ready for you to play with 
-        /// </summary>
-        /// <param name="filename">The name of the ShapeFile to create</param>
-        /// <param name="shapetype">The type of ShapeFile to be created</param>
-        /// <remarks>
-        /// <para>This overload of the Open method creates a new ShapeFile or overwrites an existing ShapeFile.  Don't forget to define a field definition using the <see cref="O:ArcShapeFile.Fields.Add">Field.Add</see> method AND write them out with <see cref="WriteFieldDefs"/>.  If you don't then this beast will automatically create a integer field definition called SHAPE_ID to prevent you .DBF file from being corrupted.</para>
-        /// <para>For a speed test of the various Open methods refer to the table in <see cref="ReadMode"/></para>
-        /// </remarks>
-        /// <example>
-        /// <code lang="C#">
-        ///using (ShapeFile myShape = new ShapeFile())
-        ///{
-        ///    myShape.Open(@"C:\Shapes\Point.shp", eShapeType.shpPoint);
-        ///    Console.WriteLine("Shape Type: {0}", myShape.ShapeType);
-        ///
-        ///    // Add a new record
-        ///    myShape.Vertices.Add(10, 10);
-        ///    myShape.Fields["TextField"].Value = "New Record";
-        ///    myShape.Fields["NumField"].Value = 3.45;
-        ///    myShape.Fields["DateField"].Value = DateTime.Now;
-        ///    myShape.WriteShape();
-        ///
-        ///    // Wait a while as someone else is playing with the shape ...
-        ///    System.Threading.Thread.Sleep(10000);
-        ///
-        ///    // Add a another new record
-        ///    myShape.Vertices.Add(10, 15);
-        ///    myShape.Fields[0].Value = "New Record 2";
-        ///    myShape.Fields[1].Value = 4.45;
-        ///    myShape.Fields[2].Value = DateTime.Now;
-        ///    myShape.WriteShape();
-        ///}
-        /// </code>
-        /// <code lang="VB">
-        ///Using myShape As New ShapeFile()
-        ///    myShape.Open(@"C:\Shapes\Point.shp", eShapeType.shpPoint)
-        ///    Console.WriteLine("Shape Type: {0}", myShape.ShapeType)
-        ///
-        ///    ' Add a new record
-        ///    myShape.Vertices.Add(10, 10)
-        ///    myShape.Fields("TextField").Value = "New Record";
-        ///    myShape.Fields("NumField").Value = 3.45;
-        ///    myShape.Fields("DateField").Value = DateTime.Now;
-        ///    myShape.WriteShape()
-        ///
-        ///    ' Wait a while as someone else is playing with the shape ...
-        ///    System.Threading.Thread.Sleep(10000)
-        ///
-        ///    ' Add a another new record
-        ///    myShape.Vertices.Add(10, 15)
-        ///    myShape.Fields(0).Value = "New Record 2"
-        ///    myShape.Fields(1).Value = 4.45
-        ///    myShape.Fields(2).Value = DateTime.Now
-        ///    myShape.WriteShape()
-        ///End Using
-        /// </code>
-        /// </example>
-        /// <seealso cref="Open(System.String)"/>
-        /// <seealso cref="Open(System.String, System.Boolean)"/>
-        /// <seealso cref="Open(System.String, eShapeType, System.Boolean)"/>
-        /// <seealso cref="Close"/>
-        /// <seealso cref="ReadMode"/>
-        public void Open(string filename, eShapeType shapetype)
-        { OpenShape(filename, true, shapetype, false); }
-        /// <summary>
-        /// Opens an existing ShapeFile ready for viewing, adding or editing, the file handles of which are locked open.
-        /// </summary>
-        /// <param name="filename">The name of the ShapeFile to open for reading or editing</param>
-        /// <param name="lockfile">Sets the lock condition of the ShapeFile handle.  If True
-        /// the ShapeFiles will remain open until the Close() command is given otherwise the ShapeFiles
-        /// are opened and closed with each Read and Write.</param>
-        /// <remarks>
-        /// <para>This overload of the Open method opens an existing ShapeFile for reading or editing.
-        /// Set to the <paramref name="lockfile"/> status to True and the file locks on the .SHP, .SHX and .DBF file streams are held open between actions. This makes read and write opertations significantly faster. The lock is maintained until cancelled with the <see cref="Close"/> command.  If the lock isn't set then every move or update operation will create and release locks on the 3 file parts.  What this does do is allow other apps to update the ShapeFile between actions.  Your choice if you want this to happen.</para>
-        /// <para>For a speed test of the various Open methods refer to the table in <see cref="ReadMode"/> </para>
-        /// </remarks>
-        /// <example>
-        /// <code lang="C#">
-        ///using (ShapeFile myShape = new ShapeFile())
-        ///{
-        ///    myShape.Open(@"C:\Shapes\Point.shp", true);
-        ///    Console.WriteLine("Shape Type: {0}", myShape.ShapeType);
-        ///
-        ///    // Add a new record
-        ///    myShape.Vertices.Add(10, 10);
-        ///    myShape.Fields["TextField"].Value = "New Record";
-        ///    myShape.Fields["NumField"].Value = 3.45;
-        ///    myShape.Fields["DateField"].Value = DateTime.Now;
-        ///    myShape.WriteShape();
-        ///
-        ///    // Wait a while and nobody else can touch it while you have go for a cup of tea ...
-        ///    System.Threading.Thread.Sleep(10000);
-        ///
-        ///    // Add a another new record
-        ///    myShape.Vertices.Add(10, 15);
-        ///    myShape.Fields[0].Value = "New Record 2";
-        ///    myShape.Fields[1].Value = 4.45;
-        ///    myShape.Fields[2].Value = DateTime.Now;
-        ///    myShape.WriteShape();
-        ///}
-        /// </code>
-        /// <code lang="VB">
-        ///Using myShape As New ShapeFile()
-        ///    myShape.Open(@"C:\Shapes\Point.shp", True)
-        ///    Console.WriteLine("Shape Type: {0}", myShape.ShapeType)
-        ///
-        ///    ' Add a new record
-        ///    myShape.Vertices.Add(10, 10)
-        ///    myShape.Fields("TextField").Value = "New Record";
-        ///    myShape.Fields("NumField").Value = 3.45;
-        ///    myShape.Fields("DateField").Value = DateTime.Now;
-        ///    myShape.WriteShape()
-        ///
-        ///    ' Wait a while and nobody else can touch it while you have go for a cup of tea ...
-        ///    System.Threading.Thread.Sleep(10000)
-        ///
-        ///    ' Add a another new record
-        ///    myShape.Vertices.Add(10, 15)
-        ///    myShape.Fields(0).Value = "New Record 2"
-        ///    myShape.Fields(1).Value = 4.45
-        ///    myShape.Fields(2).Value = DateTime.Now
-        ///    myShape.WriteShape()
-        ///End Using
-        /// </code>
-        /// </example>
-        /// <seealso cref="Open(System.String)"/>
-        /// <seealso cref="Open(System.String, eShapeType)"/>
-        /// <seealso cref="Open(System.String, eShapeType, System.Boolean)"/>
-        /// <seealso cref="Close"/>
-        /// <seealso cref="ReadMode"/>
-        public void Open(string filename, bool lockfile)
+		/// Opens an existing ShapeFile ready for viewing, adding or editing, the file handles of which are locked open.
+		/// </summary>
+		/// <param name="filename">The name of the ShapeFile to open for reading or editing</param>
+		/// <param name="lockfile">Sets the lock condition of the ShapeFile handle.  If True
+		/// the ShapeFiles will remain open until the Close() command is given otherwise the ShapeFiles
+		/// are opened and closed with each Read and Write.</param>
+		/// <remarks>
+		/// <para>This overload of the Open method opens an existing ShapeFile for reading or editing.
+		/// Set to the <paramref name="lockfile"/> status to True and the file locks on the .SHP, .SHX and .DBF file streams are held open between actions. This makes read and write opertations significantly faster. The lock is maintained until cancelled with the <see cref="Close"/> command.  If the lock isn't set then every move or update operation will create and release locks on the 3 file parts.  What this does do is allow other apps to update the ShapeFile between actions.  Your choice if you want this to happen.</para>
+		/// <para>For a speed test of the various Open methods refer to the table in <see cref="ReadMode"/> </para>
+		/// </remarks>
+		/// <example>
+		/// <code lang="C#">
+		///using (ShapeFile myShape = new ShapeFile())
+		///{
+		///    myShape.Open(@"C:\Shapes\Point.shp", true);
+		///    Console.WriteLine("Shape Type: {0}", myShape.ShapeType);
+		///
+		///    // Add a new record
+		///    myShape.Vertices.Add(10, 10);
+		///    myShape.Fields["TextField"].Value = "New Record";
+		///    myShape.Fields["NumField"].Value = 3.45;
+		///    myShape.Fields["DateField"].Value = DateTime.Now;
+		///    myShape.WriteShape();
+		///
+		///    // Wait a while and nobody else can touch it while you have go for a cup of tea ...
+		///    System.Threading.Thread.Sleep(10000);
+		///
+		///    // Add a another new record
+		///    myShape.Vertices.Add(10, 15);
+		///    myShape.Fields[0].Value = "New Record 2";
+		///    myShape.Fields[1].Value = 4.45;
+		///    myShape.Fields[2].Value = DateTime.Now;
+		///    myShape.WriteShape();
+		///}
+		/// </code>
+		/// <code lang="VB">
+		///Using myShape As New ShapeFile()
+		///    myShape.Open(@"C:\Shapes\Point.shp", True)
+		///    Console.WriteLine("Shape Type: {0}", myShape.ShapeType)
+		///
+		///    ' Add a new record
+		///    myShape.Vertices.Add(10, 10)
+		///    myShape.Fields("TextField").Value = "New Record";
+		///    myShape.Fields("NumField").Value = 3.45;
+		///    myShape.Fields("DateField").Value = DateTime.Now;
+		///    myShape.WriteShape()
+		///
+		///    ' Wait a while and nobody else can touch it while you have go for a cup of tea ...
+		///    System.Threading.Thread.Sleep(10000)
+		///
+		///    ' Add a another new record
+		///    myShape.Vertices.Add(10, 15)
+		///    myShape.Fields(0).Value = "New Record 2"
+		///    myShape.Fields(1).Value = 4.45
+		///    myShape.Fields(2).Value = DateTime.Now
+		///    myShape.WriteShape()
+		///End Using
+		/// </code>
+		/// </example>
+		/// <seealso cref="Open(System.String)"/>
+		/// <seealso cref="Open(System.String, eShapeType)"/>
+		/// <seealso cref="Open(System.String, eShapeType, System.Boolean)"/>
+		/// <seealso cref="Close"/>
+		/// <seealso cref="ReadMode"/>
+		public void Open(string filename, bool lockfile)
         { OpenShape(filename, false, eShapeType.shpNull, lockfile); }
 
         private void OpenShape(string filename, bool isNew, eShapeType shapetype, bool lockfile)
